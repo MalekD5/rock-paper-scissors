@@ -1,36 +1,78 @@
-const rps = ['rock', 'paper', 'scissors']
+let computerResult = 0,
+  PlayerResult = 0;
+const rps = ["rock", "paper", "scissors"];
+const resultdiv = document.createElement('div');
+const scorediv = document.createElement('div');
+
+setup();
+
+function setup() {
+  const rockbtn = document.querySelector("#rock");
+  const paperbtn = document.querySelector("#paper");
+  const scissorsbtn = document.querySelector("#scissors");
+  const resetbtn = document.querySelector("#reset");
+
+  rockbtn.addEventListener("click", () => playRound("rock"));
+  paperbtn.addEventListener("click", () => playRound("paper"));
+  scissorsbtn.addEventListener("click", () => playRound("scissors"));
+  resetbtn.addEventListener("click", () => {
+    PlayerResult = 0;
+    computerResult = 0;
+    update(undefined);
+  });
+
+  const container = document.querySelector('.container');
+  container.appendChild(scorediv);
+  container.appendChild(resultdiv);
+}
+
+function showResult(result) {
+      if (result === 'computer')
+            return 'Computer wins this round!';
+      else if (result === 'player')
+            return 'You win this round!';
+      else 
+            return 'This round is a draw!';
+}
+
+function update(result) {
+      if (result)
+         scorediv.innerText = `${showResult(result)}`
+      resultdiv.innerText = `You = ${PlayerResult}\n Computer = ${computerResult}`;
+}
 
 function getComputerChoice() {
-      const random = Math.floor(Math.random() * rps.length);
-      return rps[random];
+  const random = Math.floor(Math.random() * rps.length);
+  return rps[random];
 }
 
-function printResult(result) {
+function runGame(playerChoice) {
+  playerChoice = playerChoice.toLowerCase();
+  const computerChoice = getComputerChoice().toLowerCase();
+  if (playerChoice === computerChoice) {
+    return "draw";
+  }
+  let computerWinningMove = false;
+
+  if (playerChoice === "rock") {
+    computerWinningMove = computerChoice === "paper";
+  } else if (playerChoice === "paper") {
+    computerWinningMove = computerChoice === "scissors";
+  } else if (playerChoice === "scissors") {
+    computerWinningMove = computerChoice == "rock";
+  } else {
+    return "invalid";
+  }
+
+  return computerWinningMove ? "computer" : "player";
+}
+
+function playRound(playerChoice) {
+      const result = runGame(playerChoice);
       if (result === 'computer')
-            console.log('Computer wins this round!')
+            computerResult++;
       else if (result === 'player')
-            console.log('You win this round!')
-      else 
-            console.log('This round is a draw!')
-}
-
-function playRound(playerChoice, computerChoice) {
-      playerChoice = playerChoice.toLowerCase();
-      computerChoice = computerChoice.toLowerCase();
-      if (playerChoice === computerChoice) {
-            return 'draw';
-      }
-      let computerWinningMove = false;
-
-      if (playerChoice === 'rock') {
-            computerWinningMove = computerChoice === 'paper';
-      } else if (playerChoice === 'paper') {
-            computerWinningMove = computerChoice === 'scissors'
-      } else if (playerChoice === 'scissors') {
-            computerWinningMove = computerChoice == 'rock';
-      } else {
-            return 'invalid';
-      }
-
-      return computerWinningMove ? 'computer' : 'player'; 
+            PlayerResult++;
+      
+      update(result);
 }
