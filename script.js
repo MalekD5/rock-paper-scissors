@@ -34,31 +34,3 @@ function playRound(playerChoice, computerChoice) {
 
       return computerWinningMove ? 'computer' : 'player'; 
 }
-
-function checkInput(input) {
-      input = input.toLowerCase();
-      return input === 'rock' || input === 'paper' || input === 'scissors';
-}
-
-function game() {
-      let computerScore = 0, playerScore = 0;
-
-      for (let i = 0; i < 5; i++) {
-            let playerChoice = prompt('enter rock, paper, or scissors: ')
-            while (!checkInput(playerChoice)) {
-                  playerChoice = prompt('invalid input! input should be either rock, paper, or scissors: ')
-            }
-            const result = playRound(playerChoice, getComputerChoice())
-            printResult(result)
-            
-            if (result === 'draw')
-                  continue;
-            
-            if (result === 'computer')
-                  computerScore++;
-            else 
-                  playerScore++;
-      }
-
-      console.log(`final score: Computer ${computerScore}, You ${playerScore}`)
-}
