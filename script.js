@@ -38,6 +38,8 @@ function showResult(result) {
 function update(result) {
       if (result)
          scorediv.innerText = `${showResult(result)}`
+      else 
+         scorediv.innerText = '';
       resultdiv.innerText = `You = ${PlayerResult}\n Computer = ${computerResult}`;
 }
 
